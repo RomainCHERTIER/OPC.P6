@@ -1,6 +1,14 @@
 
 import csv
+import random
 
+#
+# read_csv
+#
+# lecture du fichier csv
+# @param string file_csv chemin du fichier csv
+# @return arrey liste des enregistrements csv
+#
 def read_csv(file_csv):
     data = []
     objs = []
@@ -13,3 +21,23 @@ def read_csv(file_csv):
             obj[data[0][j]] = i[j]
         objs.append(obj)
     return objs
+
+#
+# createPwd
+#
+# génération mot de passe authomatique par rapport au NiveauMDP
+# @param string pwdLevel Nom de la valeur NiveauMDP
+# @return arrey Mot de passe
+#
+def createPwd(pwdLevel):
+    element = "abcdefghijklmnopkrstuvwxyzABCDEFGHIJKLMNOPKRSTUVWYYZ1234567890-*/~$%&.:?!"
+    if pwdLevel == "D1":
+        nbCars = 8
+    elif pwdLevel == "D2":
+        nbCars = 10
+    else:
+        nbCars = 12
+    pwd = ""
+    for i in range(nbCars): pwd = pwd + element[random.randint(0, len(element) - 1)]
+
+    return pwd

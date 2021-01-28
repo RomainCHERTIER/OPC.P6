@@ -41,3 +41,16 @@ def createPwd(pwdLevel):
     for i in range(nbCars): pwd = pwd + element[random.randint(0, len(element) - 1)]
 
     return pwd
+
+#
+# addUser
+#
+# Ajout d'un utilisteur dans un LDAP
+# @param string surname,name,login,pwdLevel valeur du tableau
+# @return arrey Mot de passe
+#
+def addUser(surname,name,login,pwdLevel):
+    pwd = createPwd(pwdLevel)
+    print (name+" "+surname+" "+pwd)
+    raise Exception ("erreur Ldap")
+    return pwd

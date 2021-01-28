@@ -1,7 +1,32 @@
 
 import csv
 import random
+import datetime
 
+#
+# log
+#
+# création d'un fichier de Log
+# @param string level,msg
+#
+def log(level,msg):
+    now = datetime.datetime.now()
+    line = now.strftime("%Y%m%d %H%M%S") + " ["+level+"] " + msg
+    print(line)
+#
+#  logExit
+#
+# implémentation du fichier de log avec les différentes alerte
+# @param string level,msg
+#
+def logExit(level,msg):
+    log(level,msg)
+    if(level=="ERROR"):
+        exit(2)
+    elif(level=="WARNING"):
+        exit(1)
+    else:
+        exit(0)
 #
 # read_csv
 #

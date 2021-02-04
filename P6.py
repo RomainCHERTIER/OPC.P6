@@ -1,8 +1,14 @@
 
+import getpass
 import csv
 import random
 import datetime
 
+
+
+logDir=""
+logFile="logP6_"
+logFileExt=".log"
 #
 # log
 #
@@ -13,6 +19,14 @@ def log(level,msg):
     now = datetime.datetime.now()
     line = now.strftime("%Y%m%d %H%M%S") + " ["+level+"] " + msg
     print(line)
+    dateYYYYMMDD = now.strftime("%Y%m%d")
+    logAbsPath = logDir + logFile + dateYYYYMMDD + logFileExt
+    try:
+        fd = open(logAbsPath, "a")
+        fd.write(line + "\n")
+        fd.close()
+    except Exception as err:
+        print(" erreur : " + format(err) + "\n")
 #
 #  logExit
 #
@@ -27,6 +41,19 @@ def logExit(level,msg):
         exit(1)
     else:
         exit(0)
+#
+#
+# input_ldap_pass
+#
+# Demande du mot de passe admin Ldap
+#
+#
+def input_ldap_pass():
+    try:
+        return getpass.getpass("Enter LDAP manager password:")
+    except getpass.GetPassWarning:
+        logExit("ERROR", "erreur de saisie de mot de passe")
+        return ''
 #
 # read_csv
 #

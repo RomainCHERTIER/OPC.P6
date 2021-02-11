@@ -6,12 +6,18 @@ import datetime
 import ldap
 
 
+dataCsvFile = "csvp6.csv"
+
 LDAP_HOST = "ldap://localhost"
 LDAP_BASE_DN = "ou=Users,dc=P6,dc=local"
 LDAP_ADMIN_DN = "cn=Administrateur,dc=P6,dc=local"
 logDir=""
 logFile="logP6_"
 logFileExt=".log"
+userDir=""
+userFile="UserP6_"
+userFileExt=".txt"
+
 #
 # log
 #
@@ -114,29 +120,71 @@ def createPwd(pwdLevel):
     for i in range(nbCars): pwd = pwd + element[random.randint(0, len(element) - 1)]
 
     return pwd
-#
-# addUser
-#
-# Ajout d'un utilisteur dans un LDAP
-# @param string surname,name,login,pwdLevel valeur du tableau
-# @return arrey Mot de passe
-#
-#
 def addUser(surname,name,login,pwdLevel):
     pwd = createPwd(pwdLevel)
     print (name+" "+surname+" "+pwd)
-    raise Exception ("erreur Ldap")
-    return pwd
+    dn = login + ',' + LDAP_BASE_DN
+    fullname = surname + ' ' + name
+    entry = []
+    entry.extend([
+        ('objectClass',["person".encode('utf-8'), "organizationalPerson".encode('utf-8'), "inetOrgPerson".encode('utf-8'), "posixAccount".encode('utf-8'), "top".encode('utf-8'), "shadowAccount".encode('utf-8'), "hostObject".encode('utf-8')]),
+        ("uid", [login.encode("utf-8")]),
+        ('cn', [fullname("utf-8")]),
+        ('givenname', [surname("utf-8")]),
+        ('sn', [name("utf-8")] ),
+        ('userPassword', [pwd("utf-8")])
+    ])
+    ldap_conn = ldap.initialize(LDAP_HOST)
+    ldap_conn.simple_bind_s(LDAP_ADMIN_DN, ldapPwd)
 
+    try:
+        ldap_conn.add_s(dn, entry)
+    finally:
+        ldap_conn.unbind_s()
+    #raise Exception ("erreur Ldap")
+    return pwd
 #
-# addUser
+# doInscription
 #
 # Ajout d'un utilisteur dans un LDAP
-# @param string surname,name,login,pwdLevel valeur du tableau
-# @return arrey Mot de passe
+# @param string listCSV,output
 #
-def addUser(surname,name,login,pwdLevel):
-    pwd = createPwd(pwdLevel)
-    print (name+" "+surname+" "+pwd)
-    raise Exception ("erreur Ldap")
-    return pwd
+#
+def doInscription(listCSV):
+    nbEnrgs = len(listCSV)
+    nbError = 0
+    for i in range (nbEnrgs):
+        enrg=listCSV[i]
+        try :
+            #raise Exception ("gros problème")
+            pwd = addUser(enrg["Nom"],enrg["Prenom"],enrg["NomUtilisateur"],enrg["NiveauMDP"])
+            storePwd(enrg["NomUtilisateur"],pwd)
+        except Exception as err:
+            log("ERROR", "erreur durant l'inscription de " + enrg["NomUtilisateur"] + " erreur : " + format(err) + "\n")
+            nbError = nbError+1
+        else :
+            log("INFO", "inscription de " + enrg["NomUtilisateur"] + " : OK\n")
+    return nbError
+#
+#
+#
+#
+#
+def storePwd(nomUtilisateur,pwd):
+    now = datetime.datetime.now()
+    line = now.strftime("%Y%m%d %H%M%S") + "inscription de " + nomUtilisateur + " " + pwd + "\n"
+    dateYYYYMMDD = now.strftime("%Y%m%d")
+    userAbsPath = userDir + userFile + dateYYYYMMDD + userFileExt
+    try:
+        fd = open(userAbsPath, "a")
+        fd.write(line + "\n")
+        fd.close()
+    except Exception as err:
+        print(" erreur : l'utilisateur " + nomUtilisateur + " n'a pas été créé " + "\n")
+
+
+ldapPwd = input_ldap_pass()
+try_ldap_bind(ldapPwd)
+
+dataCsv = read_csv (dataCsvFile)
+doInscription(dataCsv)

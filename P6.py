@@ -4,6 +4,7 @@ import random
 import datetime
 import ldap
 
+
 ################################   Constants   ################################
 
 dataCsvFile = "csvp6.csv"

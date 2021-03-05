@@ -6,7 +6,7 @@ Le mot de passe de chasue utilisateur sera généré par ce même script selon l
 ## Pour commencer
 
 Préparé votre fichier CSV comme celui present dans le dossier.
-Vérifier que les information présente dan sle script correspondes a votre serveur Ldap( admin Ldap, adresse du serveur ...)
+Vérifier que les information présente dans le script correspondes a votre serveur Ldap( admin Ldap, adresse du serveur ...)
 
 ### Pré-requis
 

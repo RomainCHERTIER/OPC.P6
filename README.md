@@ -15,7 +15,7 @@ Vérifier que les informations présentent dans le script correspondes à votre 
 ## Démarrage
 
 Afin d'utiliser le script, il vous faudra modifier les constantes avec les valeurs correspondantes avec votre infrastructure.
-Vous aurez besoin de créer un fichier CSV. (Cf csvp6.csv)
+Vous aurez besoin de créer un fichier CSV. (Cf [csvp6.csv](csvp6.csv))
 
 
 ## Fabriqué avec

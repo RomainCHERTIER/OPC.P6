@@ -1,4 +1,4 @@
-MIT License
+[MIT License](https://opensource.org/licenses/mit-license.php)
 
 Copyright (c) 2021 Romain CHERTIER
 

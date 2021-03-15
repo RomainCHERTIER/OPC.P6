@@ -8,7 +8,7 @@
 #
 #                    Script for creating user accounts
 #
-# description scrip
+# This script adds users to an LDAP from the information contained in a csv file.
 #
 #
 # @author Romain CHERTIER<romain.chertier@sfr.fr>
